@@ -1,0 +1,39 @@
+<?php
+
+/** @var \Team2FeaturedCategory\FeaturedCategory\Block\Widget\FeaturedCategory $block */
+$items = $block->getCategoryProductCollection();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+$review =  $this->getLayout()->createBlock('Magento\Catalog\Block\Product\AbstractProduct');
+$templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW; ?>
+
+<div class="product-intro">
+    <div class="widget-title">
+        <?php echo $block->getNameDisplay(); ?>
+    </div>
+
+    <?php foreach ($items as $product) :
+        $image_url = $imageHelper->init($product, 'product_base_image')->setImageFile($product->getFile())->getUrl();
+    ?>
+        <div class="product-default left-details product-widget">
+            <figure>
+                <a href="<?= $product->getProductUrl() ?>">
+                    <img src="<?= $image_url ?>">
+                </a>
+            </figure>
+            <div class="product-details">
+                <div class="product-title">
+                    <a href="product.html"><?php echo $product->getName(); ?></a>
+                </div>
+                <div class="ratings-container">
+                    <div class="product-ratings">
+                        <span class="ratings" id="sao" style="width:100%"><?php echo $review->getReviewsSummaryHtml($product, $templateType, false); ?></span><!-- End .ratings -->
+                    </div><!-- End .product-ratings -->
+                </div><!-- End .product-container -->
+                <div class="price-box">
+                    <span class="product-price"><?= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($product['price']) ?></span>
+                </div><!-- End .price-box -->
+            </div><!-- End .product-details -->
+        </div>
+    <?php endforeach; ?>
+</div>

@@ -1,0 +1,117 @@
+.product-intro {
+    padding-bottom: 1.6rem;
+}
+.sidebar-product .product-widget {
+    margin-bottom: 2rem;
+}
+.product-widget {
+    display: flex;
+}
+.product-default {
+    color: #777;
+}
+.sidebar-product .product-widget figure {
+    max-width: 64px;
+    margin-right: 2rem;
+}
+.product-default figure {
+    display: flex;
+    justify-content: center;
+}
+.product-widget figure {
+    margin-bottom: 0;
+    align-items: center;
+    margin-right: 2rem;
+
+}
+.left-details .product-details {
+    align-items: flex-start;
+
+}
+.product-default .product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.product-default a {
+    color: #777;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all .2s ease-out;
+    text-decoration: none;
+}
+.product-widget .product-details {
+    max-width: calc(100% - 104px);
+}
+.sidebar-product .product-widget .product-title {
+    font-family: "Poppins","Open Sans",sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.product-default .product-title {
+    font: 400 1.5rem "Poppins","Open Sans",sans-serif;
+    letter-spacing: -.01em;
+    line-height: 1.35;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.ratings-container {
+    line-height: 1;
+    margin: 0 0 10px 1px;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+.ratings-container .product-ratings {
+    height: 13px;
+}
+.ratings-container .product-ratings, .ratings-container .ratings {
+    position: relative;
+    display: inline-block;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    font-family: 'porto';
+}
+.product-widget .ratings-container .ratings {
+    font-size: 1.2rem;
+}
+.product-widget .price-box {
+    margin-bottom: 0;
+}
+.sidebar-product .product-widget .product-price {
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+.product-price {
+    color: #465157;
+    font: 500 1.6rem/0.8 "Poppins","Open Sans",sans-serif;
+}
+#sao .product-reviews-summary .rating-summary .rating-result >span:before {
+    color: #767f84;
+}
+.rating-summary .rating-result:before {
+    color: #c7c7c7;
+ }
+.product-reviews-summary {
+    margin-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+}
+.reviews-actions{
+    display: none;
+}
+.product-reviews-summary .reviews-actions{
+    line-height: 0px;
+}
+.ratings .product-reviews-summary{
+    margin: 0;
+}
+.ratings .product-reviews-summary .reviews-actions{
+    display: none;
+}
