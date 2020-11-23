@@ -29,7 +29,7 @@
   text-decoration: none;
 }
 
-.collapsible:after {
+/* .collapsible:after {
   content: '\002B';
   color: black;
   font-weight: bold;
@@ -40,7 +40,7 @@
 
 .collapsible-active:after {
   content: "\2212";
-}
+} */
 
 .content-htmlblock {
   max-height: 0;

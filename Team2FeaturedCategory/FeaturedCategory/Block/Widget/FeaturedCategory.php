@@ -38,4 +38,37 @@ class FeaturedCategory extends \Magento\Framework\View\Element\Template
     {
         return $this->helperData->getGeneralConfig('display_name');
     }
+
+    public function getProductPriceHtml(
+        \Magento\Catalog\Model\Product $product,
+        $priceType = null,
+        $renderZone = \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,
+        array $arguments = []
+    ) {
+        if (!isset($arguments['zone'])) {
+            $arguments['zone'] = $renderZone;
+        }
+        $arguments['price_id'] = isset($arguments['price_id'])
+            ? $arguments['price_id']
+            : 'old-price-' . $product->getId() . '-' . $priceType;
+        $arguments['include_container'] = isset($arguments['include_container'])
+            ? $arguments['include_container']
+            : true;
+        $arguments['display_minimal_price'] = isset($arguments['display_minimal_price'])
+            ? $arguments['display_minimal_price']
+            : true;
+
+            /** @var \Magento\Framework\Pricing\Render $priceRender */
+        $priceRender = $this->getLayout()->getBlock('product.price.render.default');
+
+        $price = '';
+        if ($priceRender) {
+            $price = $priceRender->render(
+                \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
+                $product,
+                $arguments
+            );
+        }
+        return $price;
+    }
 }

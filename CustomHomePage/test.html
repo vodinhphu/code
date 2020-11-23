@@ -1,220 +1,322 @@
-<p>{{widget type="Magento\Cms\Block\Widget\Block" template="widget/static_block/default.phtml" block_id="19"}}</p>
-<div style="width: 500px; height: 650px;">
-    <h2 class="title">Hưng rèo</h2>
-    <div class="owl-carousel owl-theme">
-        <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" width="500px" height="500px">
-        <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" width="500px" height="500px">
-        <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" width="500px" height="500px">
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @var $block \Magento\Catalog\Block\Product\ListProduct
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$_productCollection = $block->getLoadedProductCollection();
+/** @var \Magento\Catalog\Helper\Output $_helper */
+$_helper = $block->getData('outputHelper');
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+?>
+<?php if (!$_productCollection->count()):?>
+    <div class="message info empty">
+        <div><?= $escaper->escapeHtml(__('We can\'t find products matching the selection.')) ?></div>
     </div>
-</div>
-<p>&nbsp;</p>
-<p><img src="{{media url="wysiwyg/main-banner-left-02.jpg"}}" alt="" width="260" height="315"> <img
-        src="{{media url="wysiwyg/main-banner-left-03.jpg"}}" alt="" width="400px" height="315px"></p>
-<h2 class="title">&nbsp;</h2>
-<div style="width: 500px; height: 650px;">
-    <h2 class="title">Hưng rèo</h2>
-    <div class="owl-carousel owl-theme">
-        <div class="item" style="width: 500px; height: 500px; color: red;"><strong>SLide 1</strong></div>
-        <div class="item" style="width: 500px; height: 500px; color: yellow;"><strong>SLide 12</strong></div>
-        <div class="item" style="width: 500px; height: 500px; color: blue;"><strong>SLide 13</strong></div>
-    </div>
-</div>
+<?php else:?>
+    <?= $block->getToolbarHtml() ?>
+    <?= $block->getAdditionalHtml() ?>
+    <?php
+    if ($block->getMode() == 'grid') {
+        $viewMode = 'grid';
+        $imageDisplayArea = 'category_page_grid';
+        $showDescription = false;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    } else {
+        $viewMode = 'list';
+        $imageDisplayArea = 'category_page_list';
+        $showDescription = true;
+        $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::FULL_VIEW;
+    }
+    /**
+     * Position for actions regarding image size changing in vde if needed
+     */
+    $pos = $block->getPositioned();
+    ?>
+    <div class="products wrapper <?= /* @noEscape */ $viewMode ?> products-<?= /* @noEscape */ $viewMode ?>">
+    <?php if($block->getMode() == 'grid'):?>
+        <!--CHECK VIEWMODE IS GRID-->
+        <ol class="products list items product-items">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($_productCollection as $_product):?>
+            <li class="item product product-item">
+                <div class="product-item-info"
+                     id="product-item-info_<?= /* @noEscape */ $_product->getId() ?>"
+                     data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                    <?php
+                    $productImage = $block->getImage($_product, $imageDisplayArea);
+                    if ($pos != null) {
+                        $position = 'left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;';
+                    }
+                    ?>
+                    <?php // Product Image ?>
+                  
+                        <a href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>"
+                        class="product photo product-item-photo"
+                        tabindex="-1">
+                            <div class="container">
+                                <?= $productImage->toHtml() ?>
+                                <?php $product = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId());
+                                $images = $product->getMediaGalleryImages();
+                                $tmp = 0;
+                                foreach($images as $child){
+                                    if($tmp == 1){?>
+                                <!-- <img src="img_avatar.png" alt="Avatar" class="image" style="width:100%"> -->
+                                <div class="middle">
+                                    <img src="<?php echo $child->getUrl(); ?>" class="image" style="width:100%;height:50%;left: <?php $productImage->getWidth()?> 'px';left: <?php  $productImage->getHeight() ?> 'px';">
+                                 </div>
+                                <?php } $tmp++; } ?>
+                            </div>
+                        </a>
+                        <!-- take image2 for hover-->
+                      
+                    <div class="product details product-item-details">
+                        <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <strong class="product name product-item-name">
+                            <div class="row">
+                                <a class="product-item-link"
+                                href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>">
+                                    <?=/* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name')?>
+                                </a>
+                                <div data-role="add-to-links" class="actions-secondary">
+                                    <?php if ($addToBlock = $block->getChildBlock('addto')):?>
+                                        <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </strong>
+                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+                        <?= /* @noEscape */ $block->getProductPrice($_product) ?>
+                        <?php if ($_product->isAvailable()):?>
+                            <?= $block->getProductDetailsHtml($_product) ?>
+                        <?php endif; ?>
 
-
-
-
-
-/////table cực kỳ quan trọng
-<table style="border-collapse: collapse; width: 99.9998%; height: 56px;" border="0">
-    <tbody>
-        <tr style="height: 22px;">
-            <td style="width: 50%; height: 22px;">
-                {{widget type="Magento\Cms\Block\Widget\Block" template="widget/static_block/default.phtml" block_id="20"}}
-            </td>
-            <td style="width: 50%; height: 22px;">
-                {{widget type="Magento\Cms\Block\Widget\Block" template="widget/static_block/default.phtml" block_id="23"}}
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-
-<div style="width: 500px; height: 650px;">
-    <h2 class="title">Hưng rèo</h2>
-    <div class="owl-carousel owl-theme">
-        <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" width="500px" height="500px">
-        <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" width="500px" height="500px">
-        <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" width="500px" height="500px">
-    </div>
-</div>
-
-<div style="width: 580px; height: 100%;">
-    <div class="owl-carousel owl-theme">
-        <a class="item" href="{{store url=""}}collections/erin-recommends.html">
-            <img width="100%" height="100%" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="">
-        </a>
-        <a class="item" href="{{store url=""}}collections/erin-recommends.html">
-            <img width="100%" height="100%" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="">
-        </a>
-        <a class="item" href="{{store url=""}}collections/erin-recommends.html">
-            <img width="100%" height="100%" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="">
-
-        </a>
-    </div>
-</div>
-
-
-
-<div style="width: 600px; height: 100%;">
-    <div class="owl-carousel owl-theme"><img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt=""
-            width="100%" height="100%"> <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt=""
-            width="100%" height="100%"> <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt=""
-            width="100%" height="100%"></div>
-</div>
-
-<p>
-    <a class="block-promo home-t-shirts" href="{{store url=""}}promotions/tees-all.html">
-        <img src="{{media url="wysiwyg/main-banner-left-01.jpg"}}" alt="" width="574" height="260">&nbsp; &nbsp;
-        &nbsp;&nbsp;
-        <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-            <span class="info">Buy 3 Luma tees get a 4th free</span>
-            <span class="action more icon">Shop Tees</span>
-        </span>
-    </a>
-</p>
-<p>
-    <a class="block-promo home-t-shirts" href="{{store url=""}}promotions/tees-all.html">
-        <img src="{{media url="wysiwyg/main-banner-left-02.jpg"}}" alt="" width="574" height="260">&nbsp; &nbsp;
-        &nbsp;&nbsp;
-        <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-            <span class="info">Buy 3 Luma tees get a 4th free</span>
-            <span class="action more icon">Shop Tees</span>
-        </span>
-    </a>
-    <a class="block-promo home-t-shirts" href="{{store url=""}}promotions/tees-all.html">
-        <img src="{{media url="wysiwyg/main-banner-left-03.jpg"}}" alt="" width="574" height="260">&nbsp; &nbsp;
-        &nbsp;&nbsp;
-        <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-            <span class="info">Buy 3 Luma tees get a 4th free</span>
-            <span class="action more icon">Shop Tees</span>
-        </span>
-    </a>
-</p>
-
-<div class="block-promo-wrapper block-promo-hp">
-    <a class="block-promo home-t-shirts" href="{{store url=""}}promotions/tees-all.html">
-        <span class="image">
-            <img src="{{media url="wysiwyg/home/home-t-shirts.png"}}" alt="">
-        </span>
-        <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-            <span class="info">Buy 3 Luma tees get a 4th free</span>
-            <span class="action more icon">Shop Tees</span>
-        </span>
-    </a>
-    <a class="block-promo home-pants" href="{{store url=""}}promotions/pants-all.html">
-        <img src="{{media url="wysiwyg/home/home-pants.jpg"}}" alt="">
-        <span class="content"> <strong class="title">20% OFF</strong> <span class="info">Luma pants when you shop
-                today*</span>
-            <span class="action more icon">Shop Pants</span>
-        </span>
-    </a>
-    <a class="block-promo home-erin" href="{{store url=""}}collections/erin-recommends.html">
-        <img src="{{media url="wysiwyg/home/home-erin.jpg"}}" alt="">
-        <span class="content">
-            <strong class="title">Take it from Erin</strong>
-            <span class="info">Luma founder Erin Renny shares her favorites!</span>
-        </span>
-    </a>
-    <a class="block-promo home-pants" href="{{store url=""}}promotions/pants-all.html">
-        <img src="{{media url="wysiwyg/home/home-pants.jpg"}}" alt="">
-        <span class="content"> <strong class="title">20% OFF</strong> <span class="info">Luma pants when you shop
-                today*</span>
-            <span class="action more icon">Shop Pants</span>
-        </span>
-    </a>
-</div>
-
-
-<p>
-    <a href="{{store url=""}}promotions/tees-all.html">
-        <img src="{{media url="wysiwyg/main-banner-left-01.jpg"}}" alt="" width="574" height="260">
-        <!-- <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-                <span class="info">Buy 3 Luma tees get a 4th free</span>
-                <span class="action more icon">Shop Tees</span>
-            </span> -->
-    </a>
-</p>
-<p>
-    <a href="{{store url=""}}promotions/tees-all.html">
-        <img src="{{media url="wysiwyg/main-banner-left-02.jpg"}}" width="224" height="271" alt="">
-        <!-- <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-            </span> -->
-    </a>
-    <a href="{{store url=""}}promotions/tees-all.html">
-        <img src="{{media url="wysiwyg/main-banner-left-03.jpg"}}" width="345" height="271" alt="">
-        <!-- <span class="content"> <strong class="title">Even more ways to mix and match</strong>
-            </span> -->
-    </a>
-</p>
-
-
-
-
-///////////////////////////////// Code cho cms homepage
-
-<div style="width: 500px; height: 650px;">
-    <h2 class="title">Hưng rèo</h2>
-    <div class="owl-carousel owl-theme"><img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt=""
-            width="500px" height="500px"> <img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt=""
-            width="500px" height="500px"></div>
-    <div class="owl-carousel owl-theme">&nbsp;<img class="item" src="{{media url="wysiwyg/main-banner-right-1.jpg"}}"
-            alt="" width="500px" height="500px"></div>
-</div>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="row"><img src="{{media url="wysiwyg/main-banner-left-01.jpg"}}" alt="">
-                <div class="banner-content-image content-right">
-                    <h3 class="text-banner-image-1"><strong>wooden<br></strong>Black Chair</h3>
-                    <div class="banner-info-image">
-                        <p>starting from $199</p>
-                        <a class="btnShopnow" href="#">shop now </a>
+                        <div class="product-item-inner">
+                            <div class="product actions product-item-actions">
+                                <div class="actions-primary">
+                                    <?php if ($_product->isSaleable()):?>
+                                        <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                                        <form data-role="tocart-form"
+                                              data-product-sku="<?= $escaper->escapeHtml($_product->getSku()) ?>"
+                                              action="<?= $escaper->escapeUrl($postParams['action']) ?>"
+                                              method="post">
+                                            <input type="hidden"
+                                                   name="product"
+                                                   value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                                            <input type="hidden"
+                                                   name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
+                                                   value="<?=
+                                                   /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED]
+                                                    ?>">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <button type="submit"
+                                                    title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"
+                                                    class="action tocart primary">
+                                                <span><?= $escaper->escapeHtml(__('Add to Cart')) ?></span>
+                                            </button>
+                                        </form>
+                                    <?php else:?>
+                                        <?php if ($_product->isAvailable()):?>
+                                            <div class="stock available">
+                                                <span><?= $escaper->escapeHtml(__('In stock')) ?></span></div>
+                                        <?php else:?>
+                                            <div class="stock unavailable">
+                                                <span><?= $escaper->escapeHtml(__('Out of stock')) ?></span></div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <?= strpos($pos, $viewMode . '-primary') ?
+                                    /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                                        $position,
+                                        'product-item-info_' . $_product->getId() . ' div.actions-primary'
+                                    ) : '' ?>
+                                <?= strpos($pos, $viewMode . '-secondary') ?
+                                    /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                                        $position,
+                                        'product-item-info_' . $_product->getId() . ' div.actions-secondary'
+                                    ) : '' ?>
+                            </div>
+                            <?php if ($showDescription):?>
+                                <div class="product description product-item-description">
+                                    <?= /* @noEscape */ $_helper->productAttribute(
+                                        $_product,
+                                        $_product->getShortDescription(),
+                                        'short_description'
+                                    ) ?>
+                                    <a href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>"
+                                       title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                       class="action more"><?= $escaper->escapeHtml(__('Learn More')) ?></a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row pt-4">
-                <div class="col-4" style="padding: 0%;"><img src="{{media url="wysiwyg/main-banner-left-03.jpg"}}"
-                        alt="" width="400" height="315"></div>
-                <div class="col-8" style="padding: 0 0 0 2rem;"><img
-                        src="{{media url="wysiwyg/main-banner-left-03.jpg"}}" alt=""></div>
-            </div>
-        </div>
-        <div class="col-md-6 pt-4">
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="5">
-                <div class="carousel-inner">
-                    <div class="carousel-item active"><img src="{{media url="wysiwyg/main-banner-right-1.jpg"}}"
-                            alt="First slide">
-                        <div class="banner-content content-left">
-                            <h3><strong>wooden<br></strong>Black Chair</h3>
-                            <div class="banner-info"><a class="btn skew-box" href="#">go coupon</a>
-                                <h3 class="sale-off skew-box">$100off</h3>
-                                <p>starting from $199</p>
-                                <a class="btnShopnow" href="#">shop now </a>
+                <?= strpos($pos, $viewMode . '-actions') ?
+                /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                    $position,
+                    'product-item-info_' . $_product->getId() . ' div.product-item-actions'
+                ) : '' ?>
+            </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+    <?php else: ?>
+        <!--CHECK VIEWMODE IS LIST-->
+        <ol class="products product-list-view list items product-items">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */ ?>
+            <?php foreach ($_productCollection as $_product):?>
+            <li class="item product product-item">
+                <div class="product-item-info"
+                     id="product-item-info_<?= /* @noEscape */ $_product->getId() ?>"
+                     data-container="product-<?= /* @noEscape */ $viewMode ?>">
+                    <?php
+                    $productImage = $block->getImage($_product, $imageDisplayArea);
+                    if ($pos != null) {
+                        $position = 'left:' . $productImage->getWidth() . 'px;'
+                            . 'top:' . $productImage->getHeight() . 'px;';
+                    }
+                    ?>
+                    <?php // Product Image ?>
+                    <a href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>"
+                       class="product photo product-item-photo"
+                       tabindex="-1">
+                        <?= $productImage->toHtml() ?>
+                    </a>
+                    <div class="product details product-item-details">
+                        <?php
+                            $_productNameStripped = $block->stripTags($_product->getName(), null, true);
+                        ?>
+                        <strong class="product name product-item-name">
+                            <div class="row">
+                                <a class="product-item-link"
+                                href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>">
+                                    <?=/* @noEscape */ $_helper->productAttribute($_product, $_product->getName(), 'name')?>
+                                </a>
+                            </div>   
+                        </strong>
+                        <?= $block->getReviewsSummaryHtml($_product, $templateType) ?>
+                        <?php if ($_product->isAvailable()):?>
+                            <?= $block->getProductDetailsHtml($_product) ?>
+                        <?php endif; ?>
+
+                        <div class="product-item-inner">
+                            <div class="product actions product-item-actions">
+                                <?= strpos($pos, $viewMode . '-primary') ?
+                                    /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                                        $position,
+                                        'product-item-info_' . $_product->getId() . ' div.actions-primary'
+                                    ) : '' ?>
+                                <?= strpos($pos, $viewMode . '-secondary') ?
+                                    /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                                        $position,
+                                        'product-item-info_' . $_product->getId() . ' div.actions-secondary'
+                                    ) : '' ?>
+                            </div>
+                            <?php if ($showDescription):?>
+                                <div class="product description product-item-description">
+                                    <?= /* @noEscape */ $_helper->productAttribute(
+                                        $_product,
+                                        $_product->getShortDescription(),
+                                        'short_description'
+                                    ) ?>
+                                     <?php if( $_product->getShortDescription() == '')?>
+                                        <a href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>"
+                                        title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                        class="action more" style="color:#606DA6;text-decoration:none;"><?= $escaper->escapeHtml(__('Learn More')) ?></a>
+                                    <?php else: ?>
+                                        <a href="<?= $escaper->escapeUrl($_product->getProductUrl()) ?>"
+                                        title="<?= /* @noEscape */ $_productNameStripped ?>"
+                                        class="action more go-to-detail"><?= $escaper->escapeHtml(__('Go to detail =>>>')) ?></a>
+                                </div>
+                            <?php endif; ?>
+                            <?= /* @noEscape */ $block->getProductPrice($_product) ?>
+                            <div class="row">
+                                <div class="actions-primary">
+                                    <?php if ($_product->isSaleable()):?>
+                                        <?php $postParams = $block->getAddToCartPostParams($_product); ?>
+                                        <form data-role="tocart-form"
+                                              data-product-sku="<?= $escaper->escapeHtml($_product->getSku()) ?>"
+                                              action="<?= $escaper->escapeUrl($postParams['action']) ?>"
+                                              method="post">
+                                            <input type="hidden"
+                                                   name="product"
+                                                   value="<?= /* @noEscape */ $postParams['data']['product'] ?>">
+                                            <input type="hidden"
+                                                   name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>"
+                                                   value="<?=
+                                                   /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED]
+                                                    ?>">
+                                            <?= $block->getBlockHtml('formkey') ?>
+                                            <button type="submit"
+                                                    title="<?= $escaper->escapeHtmlAttr(__('ADD TO CART')) ?>"
+                                                    class="action tocart primary add-tocart-listview">
+                                                    <i class="icon-shopping-bag"></i><span style="padding-left:1rem;"><?= $escaper->escapeHtml(__('ADD TO CART')) ?></span>
+                                            </button>
+                                        </form>
+                                    <?php else:?>
+                                        <?php if ($_product->isAvailable()):?>
+                                            <div class="stock available">
+                                                <span><?= $escaper->escapeHtml(__('In stock')) ?></span></div>
+                                        <?php else:?>
+                                            <div class="stock unavailable">
+                                                <span><?= $escaper->escapeHtml(__('Out of stock')) ?></span></div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
+                                <div data-role="add-to-links" class="actions-secondary">
+                                    <?php if ($addToBlock = $block->getChildBlock('addto')):?>
+                                        <?= $addToBlock->setProduct($_product)->getChildHtml() ?>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item"><img src="{{media url="wysiwyg/main-banner-right-1.jpg"}}"
-                            alt="Second slide"></div>
-                    <div class="carousel-item"><img src="{{media url="wysiwyg/main-banner-right-1.jpg"}}"
-                            alt="Third slide"></div>
-                    <div class="carousel-item"><img src="{{media url="wysiwyg/main-banner-right-1.jpg"}}"
-                            alt="Third slide"></div>
                 </div>
-                <a class="carousel-control-prev" role="button" href="#carouselExampleControls" data-slide="prev"> <span
-                        class="sr-only">Previous</span> </a> <a class="carousel-control-next" role="button"
-                    href="#carouselExampleControls" data-slide="next"> <span class="sr-only">Next</span> </a>
-            </div>
-            <!-- <img src="{{media url="wysiwyg/main-banner-right-1.jpg"}}" alt="" /> -->
-        </div>
-    </div>
-</div>
+                <?= strpos($pos, $viewMode . '-actions') ?
+                /* @noEscape */ $secureRenderer->renderStyleAsTag(
+                    $position,
+                    'product-item-info_' . $_product->getId() . ' div.product-item-actions'
+                ) : '' ?>
+            </li>
+            <?php endforeach; ?>
+        </ol>
+    <?php endif; ?>
+    <?= $block->getToolbarHtml() ?>
+    <?php if (!$block->isRedirectToCartEnabled()):?>
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?= $escaper->escapeJs($_product->getSku()) ?>"
+                }
+            }
+        }
+        </script>
+    <?php endif; ?>
+    <script>
+        function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+                x.className += " responsive";
+            } else {
+                x.className = "topnav";
+            }
+        }
+    </script>
+<?php endif; ?>
+

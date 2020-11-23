@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
-    <widget class="Team2DetailPage\CustomImageBlock\Block\Widget\CustomImageBlock" id="team2detailpage_customimageblock_customimageblock">
+    <widget class="Team2DetailPage\CustomImageBlock\Block\Widget\CustomImageBlock" id="team2detailpage_customimageblock_customimageblock" >
         <label> Custom Image Block</label>
         <description>Custom Image Block detail page </description>
 

@@ -5,7 +5,7 @@ $width = (int)$block->escapeHtml($block->getData('widthImage'));
 $height = (int)$block->escapeHtml($block->getData('heightImage'));
 ?>
 <hr class="luat-hr">
-<div class="product data items"
+<div class="product data items Feature-phu-product"
      data-mage-init='{"mage/tabs": {"openedState": "active", "animate": {"duration": 100}, "active": 0, "disabledState": "disabled"}}'>
     <div class="section-feature-product">
         <?php if ($block->getTitle()): ?>
@@ -20,6 +20,7 @@ $height = (int)$block->escapeHtml($block->getData('heightImage'));
 
             $categories = $block->getCategoryCollection()->getItems();
             foreach ($categories as $key => $value) {
+
                 // echo $key.": ".$value->getName();
                 if($flash > $maxCategory){
                     break;
@@ -27,7 +28,7 @@ $height = (int)$block->escapeHtml($block->getData('heightImage'));
                 $flash++;
                 ?>
                 <div class="item title" data-role="collapsible">
-                    <a class="switch-feature-product" data-toggle="trigger" href="#tab-<?php echo strtolower($value->getName()) ?>"><?php echo $value->getName()?></a>
+                    <a class="switch-feature-product" data-toggle="trigger" href="#tab-<?php echo strtolower($value->getName()) ?>"><?php echo $value->getName(); ?></a>
                 </div>
                 <?php
             }
@@ -76,7 +77,7 @@ foreach($categories as $category)
         }
         $index++;
         ?>
-        <div id="tab-"echo<?php strtolower($category->getName());?>"" class="item content" data-role="content">
+        <div id="tab-<?php echo strtolower($category->getName()); ?>" class="item content" data-role="content">
         <!-- Content Featured Product -->
         <div class="block widget block-products-list <?= $mode ?>">
 
@@ -92,7 +93,8 @@ foreach($categories as $category)
                                 $listBlock = $objectManager->get('\Magento\Catalog\Block\Product\ListProduct');
                                 $addToCartUrl =  $listBlock->getAddToCartUrl($_item);
                                 $image_url = $imageHelper->init($_item, 'product_thumbnail_image')->setImageFile($_item->getFile())->resize($width,$height)->getUrl();
-                                ?>
+                            ?>
+                            
                             <a href="<?=$_item->getProductUrl()?>" class="product-item-photo">
                                 <img src="<?= $image_url ?>">
                             </a>
@@ -132,10 +134,8 @@ foreach($categories as $category)
 
                         <?php
                         if($price<=$finalPrice)
-                        {
-                            ?>
-                            <div class="price-product"><strong class="price-product">$<?=number_format($price, 2, '.', '')?></strong></div>
-                            <?php
+                        {                                          
+                                echo $block->getProductPrice($_item)  ;
                         }
                         else
                         {
@@ -220,3 +220,4 @@ foreach($categories as $category)
 ?>
 
 </div>
+

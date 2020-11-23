@@ -9,7 +9,6 @@ class Widget
     {
         // I rather do a check for a specific parameters
         if(key_exists("widget_image_chooser", $params)) {
-
             $url = $params["widget_image_chooser"];
             if(strpos($url,'/directive/___directive/') !== false) {
 

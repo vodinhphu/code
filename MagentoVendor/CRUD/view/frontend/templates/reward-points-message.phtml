@@ -1,0 +1,17 @@
+<?php
+// use Magento\Framework\View\Element\Template;
+// /* @var Template $block /
+// $this->cc()
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+if($customerSession->isLoggedIn() && $cart->getQuote()->getData('rewardpoint') == 0) {  // Display when it doesn't have discount applied reward points
+    ?>
+    <div class="reward-message">
+    <img src="https://i.ibb.co/hFt4Vys/dollar.png" alt="dollar" style="width:15px;height:15px;"> You can earn <span class="message-reward-point"><?php echo $block->getRewardpoint();?> Reward Points</span> for completing your purchase
+    </div>
+    <div>
+        <input type="hidden" id="rwpoint" value="<?php echo $block->getRewardpoint()?>">
+    </div>
+<?php }
+?>

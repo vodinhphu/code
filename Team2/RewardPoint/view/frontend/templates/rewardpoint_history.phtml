@@ -1,0 +1,27 @@
+<table class="table table-hover">
+<thead>
+<tr>
+<th>DATE</th>
+<th>CHANGE</th>
+<th>COMMENT</th>
+<th>ACTION</th>
+</tr>
+</thead>
+<tbody>
+<?php
+$historyCollection = $block->getHistoryCollectionFront();
+foreach ($historyCollection as $row) : ?>
+<tr>
+
+<td><?= $row['updated_at']; ?></td>
+<td><?php if($row['point']>0){
+echo "+" . $row['point'];
+} else {
+echo $row['point'];
+} ?></td>
+<td><?= $row['comment']; ?></td>
+<td><?= $row['action']; ?></td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>

@@ -3,12 +3,4 @@
     <head>
         <css src="Team2DetailPage_CustomHTMLBlock::css/HTMLBlock/test.css"/>
     </head>
-    <body>
-        <!-- <referenceContainer name="before.body.end">
-            <block name="customhomepage.carousel.widget.js"
-                    class="Magento\Framework\View\Element\Template"
-                    template="CustomHomePage_CarouselWidget::script.phtml" 
-            />
-        </referenceContainer> -->
-    </body>
 </page>

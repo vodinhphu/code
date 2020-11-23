@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
-<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema_instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
-    <widget class="CustomHomePage\CustomMainBanner\Block\Widget\customMainBannerLeft" id="custom_mainbanner_left" name="custom_mainbanner_left">
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget class="CustomHomePage\CustomMainBanner\Block\Widget\customMainBannerLeft" id="custom_mainbanner_left">
         <label> Main banner left </label>
         <description>Main banner left 3 images</description>
             
@@ -88,7 +88,7 @@
     </widget>
 
     <!-- custom banner right -->
-    <widget class="CustomHomePage\CustomMainBanner\Block\Widget\customMainBannerRight" id="custom_mainbanner_right" name="custom_mainbanner_right">
+    <widget class="CustomHomePage\CustomMainBanner\Block\Widget\customMainBannerRight" id="custom_mainbanner_right">
         <label> Main Banner Right </label>
         <description>Slider main banner right </description>
             
@@ -210,7 +210,7 @@
             </container>
         </containers>
     </widget>
-    <widget class="CustomHomePage\CustomMainBanner\Block\Widget\customMainBannerAll" id="custom_mainbanner_all" name="custom_mainbanner_all">
+    <widget class="CustomHomePage\CustomMainBanner\Block\Widget\customMainBannerAll" id="custom_mainbanner_all">
         <label> Main Banner All </label>
         <description>Slider main banner right </description>
          <parameters>

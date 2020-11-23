@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
-<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
-    <widget class="Team2DetailPage\CustomHTMLBlock\Block\Widget\customHTMLBlock" id="team2detailpage_customhtmlblock_customhtmlblock" name="team2detailpage_customhtmlblock_customhtmlblock">
+
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">   
+    <widget  id="teamdetailpage"
+            class="Team2DetailPage\CustomHTMLBlock\Block\Widget\CustomHtmlBlock">
         <label> HTML block detail page </label>
         <description>HTML block detail page </description>
-            
+
         <parameters>
             <parameter name="htmlBlockHeader" sort_order="10" visible="true" xsi:type="text">
                 <label>Block header</label>
@@ -15,35 +18,10 @@
                 <label>Block content</label>
             </parameter>
         </parameters>
-        <containers>
+        <!-- <containers>
             <container name="sidebar.additional">
-                <template name="default" value="list_default" />
-                <template name="names_only" value="list_names" />
-                <template name="images_only" value="list_images" />
+              
             </container>
-        </containers>
-    </widget>
-    <widget class="Team2DetailPage\CustomHTMLBlock\Block\Widget\customHTMLBlockTest" id="team2detailpage_customhtmlblock_customhtmlblocktest" name="team2detailpage_customhtmlblock_customhtmlblocktest">
-        <label> HTML testttt</label>
-        <description>HTML block detail page </description>
-            
-        <parameters>
-            <parameter name="htmlBlockHeader" sort_order="10" visible="true" xsi:type="text">
-                <label>Block header</label>
-            </parameter>
-            <parameter name="htmlBlockSubtitle" sort_order="10" visible="true" xsi:type="text">
-                <label>Block sub-title</label>
-            </parameter>
-            <parameter name="htmlBlockContent" sort_order="10" visible="true" xsi:type="text">
-                <label>Block content</label>
-            </parameter>
-        </parameters>
-        <containers>
-            <container name="sidebar.additional">
-                <template name="default" value="list_default" />
-                <template name="names_only" value="list_names" />
-                <template name="images_only" value="list_images" />
-            </container>
-        </containers>
+        </containers> -->
     </widget>
 </widgets>

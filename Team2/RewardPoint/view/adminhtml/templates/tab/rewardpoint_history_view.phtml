@@ -1,0 +1,81 @@
+<?php
+$historyCollection=$block->getHistoryCollection();
+?>
+<div class="admin__control-support-text">
+<span id="reviewGrid-total-count" data-ui-id="admin-customer-reviews-total-count">
+<?=count($historyCollection);?> </span>
+records found <span id="reviewGrid_massaction-count" class="mass-select-info _empty">
+<strong data-role="counter">0</strong>
+<span>selected</span>
+</span>
+</div>
+<div class="admin__data-grid-pager-wrap">
+
+<select name="limit" id="reviewGrid_page-limit" onchange="reviewGridJsObject.loadByElement(this)" class="admin__control-select">
+<option value="20" selected="selected">20
+</option>
+<option value="30">30
+</option>
+<option value="50">50
+</option>
+<option value="100">100
+</option>
+<option value="200">200
+</option>
+</select>
+<label for="reviewGridreviewGrid_page-limit" class="admin__control-support-text">per page</label>
+
+<div class="admin__data-grid-pager">
+<button type="button" class="action-previous disabled">
+<span>Previous page</span>
+</button>
+<input type="text" id="reviewGrid_page-current" name="page" value="1" class="admin__control-text" data-ui-id="admin-customer-reviews-current-page">
+<script type="text/javascript"> function eventListeneryFkYzMCaRI () {
+reviewGridJsObject.inputPage(event, '1');
+}
+var listenedElementyFkYzMCaRI = document.querySelector("#reviewGrid_page-current");
+if (listenedElementyFkYzMCaRI) {
+listenedElementyFkYzMCaRI.onkeypress = function (event) {
+var targetElement = listenedElementyFkYzMCaRI;
+if (event && event.target) {
+targetElement = event.target;
+}
+eventListeneryFkYzMCaRI.apply(targetElement);
+}
+}</script> <label class="admin__control-support-text" for="reviewGrid_page-current">
+of <span>1</span> </label>
+<button type="button" class="action-next disabled">
+<span>Next page</span>
+</button>
+</div>
+</div>
+
+
+<table class="data-grid" width="100%" border="1" style="margin-top:1rem;">
+<tr align="center">
+
+
+<th class="data-grid-th">DATE</th>
+<th class="data-grid-th">CHANGE</th>
+<th class="data-grid-th">COMMENT</th>
+
+
+<th class="data-grid-th">ACTION</th>
+</tr>
+
+<?php foreach($historyCollection as $row):
+?>
+<tr class="admin__table-secondary" align="center">
+
+<td><?=date("F j, Y",strtotime($row['updated_at']));?></td>
+<td><?php if($row['point']>0){
+echo "+" . $row['point'];
+} else {
+echo $row['point'];
+} ?></td>
+
+<td><?=$row['comment'];?></td>
+<td><?=$row['action'];?></td>
+</tr>
+<?php endforeach;?>
+</table>
